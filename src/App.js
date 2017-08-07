@@ -1,18 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+
+//CSS
 import './App.css';
+
+//Components
+import Login from './components/Login.js'
+import AppBar from 'material-ui/AppBar';
+
+//material-ui components
+import IconButton from 'material-ui/IconButton';
+
+//router
+import Routes from './routes.js'
+
+const styles = {
+  navbar:{
+    paddingLeft:0,
+    paddingRight:'50px',
+    backgroundColor:'#2C434B'
+  }
+};
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <AppBar
+          title={<span style={styles.title}>Gestor de Proyectos</span>}
+          iconElementLeft={<IconButton></IconButton>}
+          style={styles.navbar}
+        />
+        {/*Router*/}
+        <Routes />
       </div>
     );
   }

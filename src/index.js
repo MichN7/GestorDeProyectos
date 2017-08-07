@@ -4,5 +4,23 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import { BrowserRouter } from 'react-router-dom'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
+const Main = () =>(
+  <MuiThemeProvider>
+    <App />
+  </MuiThemeProvider>
+);
+
+const WithRouter = () => (
+  <BrowserRouter>
+    <Main />
+  </BrowserRouter>
+);
+
+ReactDOM.render(<WithRouter />, document.getElementById('root'));
 registerServiceWorker();
