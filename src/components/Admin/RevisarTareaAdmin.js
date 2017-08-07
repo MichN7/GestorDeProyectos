@@ -1,17 +1,17 @@
 import React, {Component} from 'react'
-import './NuevaTareaAdmin.css'
+import './RevisarTareaAdmin.css'
 
-class NuevaTarea extends Component {
+class Tareas extends Component {
   constructor() {
     super()
   }
   render(){
     return(
       <div>
-        <h1>Componente Nueva Tarea</h1>
+        <h1>Componente Revisar Tarea</h1>
       </div>
     )
   }
 }
 
-export default NuevaTarea;
+export default Tareas;
