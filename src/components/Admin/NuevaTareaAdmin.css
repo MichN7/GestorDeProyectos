@@ -1,0 +1,59 @@
+#admin-nueva-tarea h2{
+  font-size: 100%;
+  font-style: normal;
+  font-weight: 500;
+  color: #375152;
+}
+
+div#admin-agergar-starea {
+    /* display: -webkit-inline-box; */
+    background-color: #5C8798;
+    /* border-radius: 30px; */
+    width: 100%;
+    text-align: -webkit-center;
+}
+
+div#admin-agergar-starea h2 {
+    margin-right: 0;
+    color: white;
+    margin-top: 15px;
+    font-size: 100%;
+    margin-left: 0;
+    text-transform: capitalize;
+}
+
+div#admin-agergar-starea svg {
+    height: 33px !important;
+    width: 20px !important;
+    fill: #2C434B!important;
+}
+
+div#admin-agergar-starea button {
+    width: 33px !important;
+    height: 33px !important;
+    background-color: #C7B99C!important;
+}
+
+div#admin-descripcion-tarea {
+    margin-bottom: 5%;
+}
+
+div#admin-nombre-tarea {
+    margin-top: 5%;
+}
+
+@media (max-width: 650px) {
+  div#admin-nombre-tarea {
+      margin-top: 10%;
+  }
+}
+
+div#admin-starea {
+    display: -webkit-inline-box;
+    width: 41%;
+}
+
+div#admin-dialog h4{
+  margin-bottom: 0;
+  color: #5C8798;
+}

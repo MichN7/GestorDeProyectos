@@ -2,8 +2,8 @@ import React from 'react'
 import {Switch, Route} from 'react-router-dom'
 
 import AdminRoute from './AdminRoute.js'
-import Login from './components/Login.js'
-import NuevaTareaAdmin from './components/Admin/NuevaTareaAdmin.js'
+import Login from '../Login.js'
+import NuevaTareaAdmin from '../Admin/NuevaTareaAdmin.js'
 
 const Routes = () => (
   <Switch>

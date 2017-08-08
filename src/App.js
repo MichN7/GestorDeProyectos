@@ -11,7 +11,7 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 
 //router
-import Routes from './MainRoutes.js'
+import Routes from './components/Routers/MainRoutes.js'
 
 const styles = {
   navbar:{
