@@ -14,21 +14,26 @@ const styles = {
 
 
 class ChipsSecundariasActivas extends Component {
-  constructor() {
+  constructor(props) {
     super()
   }
-  handleTouchTap() {
-    alert('Click en el Chip!!');
-  }
+
   render(){
     return(
       <div>
-        <Chip
-          onTouchTap={this.handleTouchTap}
-          style={styles.chip}
-        >
-          Datos aqui
-        </Chip>
+        {this.props.datos.map((dato,key)=>{
+          <Chip
+            style={styles.chip}
+            key={key}
+          >
+            <div id='chip-tarea-sec-activa'>
+              <h4 id="nueva-tarea-titulo">{dato.tarea}</h4>
+              <hr className="style14"/>
+              <h4 className="nueva-tarea-desc"><strong>Encargado: </strong> {dato.encargado}</h4>
+              <h4 className="nueva-tarea-desc"><strong>Status: </strong> {dato.status}</h4>
+            </div>
+          </Chip>
+        })}
       </div>
     )
   }
@@ -38,7 +43,10 @@ class TareasSecundariasActivasAdmin extends Component {
   constructor() {
     super()
     this.state ={
-      datosTareaPrincipal:[{nombre:'Hacer Nominas',status:'En proceso'}]
+      datosTareaPrincipal:[{nombre:'Realizar proyecto ambiental',status:'En proceso'}]
+      datosTareasSecundarias:[{nombre:'Colectar basura',encargado:'José Lopez',status:'En proceso'},
+                              {nombre:'Colectar basura',encargado:'José Lopez',status:'En proceso'},
+                              {nombre:'Colectar basura',encargado:'José Lopez',status:'En proceso'}]
     }
   }
   render(){
@@ -46,7 +54,7 @@ class TareasSecundariasActivasAdmin extends Component {
       <div id="tareas-secundaria-activas">
         <h2>Tarea: {this.state.datosTareaPrincipal[0].nombre}</h2>
         <h2>Status: {this.state.datosTareaPrincipal[0].status}</h2>
-        <ChipsSecundariasActivas/>
+        <ChipsSecundariasActivas datos={this.state.datosTareasSecundarias}/>
       </div>
     )
   }
