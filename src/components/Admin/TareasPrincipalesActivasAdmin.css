@@ -1,0 +1,17 @@
+div.tareas-principales-items {
+    text-align: left;
+}
+
+div#tareas-principlaes-activas h2 {
+    color: #DED5B8;
+    background-color: #5C8798;
+    text-transform: uppercase;
+}
+
+div.tareas-principales-items p {
+    color: #375152!important;
+}
+
+div.tareas-principales-items span {
+    color: #C7B99C;
+}

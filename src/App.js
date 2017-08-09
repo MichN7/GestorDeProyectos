@@ -26,7 +26,7 @@ class App extends Component {
     return (
       <div className="App">
         <AppBar
-          title={<span style={styles.title}>Gestor de Proyectos</span>}
+          title={<span style={styles.title}>GESTOR DE PROYECTOS</span>}
           iconElementLeft={<IconButton></IconButton>}
           style={styles.navbar}
         />

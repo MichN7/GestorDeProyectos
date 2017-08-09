@@ -1,0 +1,28 @@
+div#admin-revisar-tarea a{
+  text-decoration: none;
+  cursor: pointer;
+  color: #5C8798!important;
+}
+
+div#admin-revisar-tarea hr.style14{
+  border: 0;
+  height: 1px;
+  background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+  background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+  background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+  background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+}
+
+div#admin-revisar-tarea {
+    padding-top: 5%!important;
+    padding-bottom: 5%!important;
+}
+div#revisar-tareas-activas {
+    margin-bottom: 100px;
+    margin-top: 100px;
+}
+
+div#revisar-tareas-realizadas {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
