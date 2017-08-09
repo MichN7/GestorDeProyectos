@@ -85,11 +85,13 @@ class Chips extends Component{
               onRequestDelete={() => this.handleRequestDelete(key)}
               style={this.styles.chip}
             >
-              <div id="nueva-tarea-chips">
+              <div id="nueva-tarea-agregada">
                 <h4 id="nueva-tarea-titulo">{dato.tarea}</h4>
                 <hr className="style14"/>
-                <h4 className="nueva-tarea-desc">Encargado: {dato.encargado}</h4>
-                <p className="nueva-tarea-desc">Descripcion: {dato.descripcion}</p>
+                <h4 className="nueva-tarea-desc"><strong>Encargado: </strong> {dato.encargado}</h4>
+                <p>
+                  <strong>Descripción: </strong>{dato.descripcion}
+                </p>
               </div>
             </Chip>
            );
@@ -171,7 +173,7 @@ class DialogTarea extends Component{
    ];
 
     return(
-      <div>
+      <div id="admin-dialog">
         <div id="admin-agergar-starea">
           <div id="admin-starea">
             <h2>Agregar sub-tarea</h2>

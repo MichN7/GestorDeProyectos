@@ -70,6 +70,17 @@ h4.nueva-tarea-desc {
     margin: auto;
 }
 
-div#admin-agergar-starea span{
-  width:100% !important;
+div#admin-dialog span{
+  white-space: initial !important;
+  width: 100% !important;
+}
+
+div#nueva-tarea-agregada p {
+    text-align: justify;
+    line-height: 20px;
+}
+
+h4#nueva-tarea-titulo {
+    margin-top: 2%;
+    font-size: x-large;
 }
