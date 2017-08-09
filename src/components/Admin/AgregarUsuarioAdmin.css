@@ -1,0 +1,17 @@
+div#admin-agregar h2{
+    font-size: 100%;
+    font-style: normal;
+    font-weight: 500;
+    color: #375152;
+}
+
+div#admin-agregar-button button{
+  background-color: #2C434B!important;
+}
+
+div#admin-agregar-button{
+  margin-top: 35px;
+}
+div#admin-agregar-nombre{
+  margin-top: 40px;
+}

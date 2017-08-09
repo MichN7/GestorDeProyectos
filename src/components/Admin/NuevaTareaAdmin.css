@@ -84,3 +84,7 @@ h4#nueva-tarea-titulo {
     margin-top: 2%;
     font-size: x-large;
 }
+
+#admin-dialog-button button{
+  background-color: #2C434B!important;
+}
