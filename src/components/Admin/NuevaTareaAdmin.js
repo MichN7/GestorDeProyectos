@@ -40,6 +40,7 @@ class Chips extends Component{
     this.styles = {
       chip: {
         margin: 4,
+        width:'100%'
       },
       wrapper: {
         display: 'flex',
@@ -53,27 +54,10 @@ class Chips extends Component{
       alert('Why would you want to delete React?! :)');
       return;
     }
-
-    let chipData = this.props.datos;
-    const chipToDelete = this.datos.map((chip) => chip.key).indexOf(key);
+    const chipToDelete = this.props.datos.map((chip) => chip.key).indexOf(key);
     this.chipData.splice(chipToDelete, 1);
     this.setState({chipData: this.chipData});
   };
-
-  renderChip(data) {
-    return (
-      <Chip
-        key={data.key}
-        onRequestDelete={() => this.handleRequestDelete(data.key)}
-        style={this.styles.chip}
-      >
-        <div>
-          <h1>Wooo</h1>
-          {data.label}
-        </div>
-      </Chip>
-    );
-  }
 
   render(){
     return(
@@ -82,7 +66,7 @@ class Chips extends Component{
           return (
             <Chip
               key={key}
-              onRequestDelete={() => this.handleRequestDelete(key)}
+              onRequestDelete={() => this.props.funEliminar(key)}
               style={this.styles.chip}
             >
               <div id="nueva-tarea-agregada">
@@ -132,6 +116,7 @@ class DialogTarea extends Component{
       encargado:this.state.personal[value],
     });
   }
+
   handleCloseAceptar = () => {
     let tarea = this.state.tarea;
     let descripcion = this.state.descripcion;
@@ -155,6 +140,14 @@ class DialogTarea extends Component{
         descripcion:event.target.value
       });
     }
+
+  eliminarChip = (index) =>{
+    let chips = this.state.arreglo;
+    chips.splice(index,1);
+    this.setState({
+      arreglo: chips,
+    })
+  }
 
   render(){
     const actions = [
@@ -220,7 +213,7 @@ class DialogTarea extends Component{
             </Dialog>
           </div>
         </div>
-        <Chips datos={this.state.arreglo} />
+        <Chips datos={this.state.arreglo} funEliminar={this.eliminarChip.bind(this)} />
       </div>
     )
   }
