@@ -141,8 +141,9 @@ class DialogTarea extends Component{
     let encargado = this.state.encargado;
     let dia = this.state.dia;
 
-    this.setState({
       {/*Este state es el que se tiene que subir a la BD */}
+    this.setState({
+
       arreglo: this.state.arreglo.concat([{tarea:tarea,
                                            encargado:encargado,
                                            dia:dia,

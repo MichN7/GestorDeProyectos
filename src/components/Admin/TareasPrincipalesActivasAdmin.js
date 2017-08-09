@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-
+import {Link} from 'react-router-dom'
 //css
 import './TareasPrincipalesActivasAdmin.css'
 
@@ -21,6 +21,7 @@ class ItemTareaActiva extends Component{
           return(
             <div>
               <Divider />
+              <Link to={`/admin/revisar-tareas/tareas-secundaria-activas`}>
               <ListItem
                 primaryText={dato.nombre
                 }
@@ -31,6 +32,7 @@ class ItemTareaActiva extends Component{
                   </p>
                 }
               />
+              </Link>
             </div>
           )
           })
@@ -43,8 +45,9 @@ class ItemTareaActiva extends Component{
 class TareasPrincipalesActivas extends Component {
   constructor() {
     super()
+    {/* Este es el status al que se le agregan los datos de la BD */}
     this.state = {
-            {/* Este es el status al que se le agregan los datos de la BD */}
+
       tareas:[{nombre:"Hacer una colectiva",descripcion:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ", status:"En proceso"},
               {nombre:"Posada",descripcion:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ',status:"En proceso"},
               {nombre:"Analisis Mercandil",descripcion:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ' ,status:"En proceso"}],

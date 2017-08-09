@@ -3,3 +3,7 @@ div#tareas-principales-realizadas h2{
   background-color: #5C8798;
   text-transform: uppercase;
 }
+
+div#tareas-principales-realizadas a{
+  text-decoration: none;
+}

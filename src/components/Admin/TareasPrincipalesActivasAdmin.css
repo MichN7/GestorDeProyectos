@@ -8,6 +8,10 @@ div#tareas-principlaes-activas h2 {
     text-transform: uppercase;
 }
 
+div#tareas-principlaes-activas a{
+  text-decoration: none;
+}
+
 div.tareas-principales-items p {
     color: #375152!important;
 }
