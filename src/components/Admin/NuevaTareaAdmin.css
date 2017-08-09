@@ -57,3 +57,19 @@ div#admin-dialog h4{
   margin-bottom: 0;
   color: #5C8798;
 }
+
+h4#nueva-tarea-titulo {
+    font-weight: bold;
+    margin: 0;
+    margin-top: 6%;
+    font-size: 1.3em;
+}
+
+h4.nueva-tarea-desc {
+    font-weight: unset;
+    margin: auto;
+}
+
+div#admin-agergar-starea span{
+  width:100% !important;
+}

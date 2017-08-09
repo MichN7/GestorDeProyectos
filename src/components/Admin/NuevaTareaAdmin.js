@@ -17,6 +17,9 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
   import SelectField from 'material-ui/SelectField';
   import MenuItem from 'material-ui/MenuItem';
 
+  //Chip
+  import Chip from 'material-ui/Chip';
+
 const styles = {
   addButton:{
     marginTop:'6px',
@@ -30,32 +33,68 @@ const styles = {
 
 }
 
-class SelectFieldTarea extends Component{
-  constructor(){
-    super()
+class Chips extends Component{
+  constructor(props) {
+    super(props);
+
+    this.styles = {
+      chip: {
+        margin: 4,
+      },
+      wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap',
+      },
+    };
   }
 
-  state = {
-    value: 1,
+  handleRequestDelete = (key) => {
+    if (key === 3) {
+      alert('Why would you want to delete React?! :)');
+      return;
+    }
+
+    let chipData = this.props.datos;
+    const chipToDelete = this.datos.map((chip) => chip.key).indexOf(key);
+    this.chipData.splice(chipToDelete, 1);
+    this.setState({chipData: this.chipData});
   };
 
-  handleChange = (event, index, value) => this.setState({value});
+  renderChip(data) {
+    return (
+      <Chip
+        key={data.key}
+        onRequestDelete={() => this.handleRequestDelete(data.key)}
+        style={this.styles.chip}
+      >
+        <div>
+          <h1>Wooo</h1>
+          {data.label}
+        </div>
+      </Chip>
+    );
+  }
 
   render(){
     return(
-      <div>
-        <SelectField
-          value={this.state.value}
-          onChange={this.handleChange}
-          style={styles.dialog}
-          selectedMenuItemStyle={ {backgroundColor: '#C7B99C', color: '#FFFFFF'} }
-        >
-          <MenuItem value={1} primaryText="Never" />
-          <MenuItem value={2} primaryText="Every Night" />
-          <MenuItem value={3} primaryText="Weeknights" />
-          <MenuItem value={4} primaryText="Weekends" />
-          <MenuItem value={5} primaryText="Weekly"/>
-        </SelectField>
+      <div style={this.styles.wrapper}>
+        {this.props.datos.map((dato,key)=>{
+          return (
+            <Chip
+              key={key}
+              onRequestDelete={() => this.handleRequestDelete(key)}
+              style={this.styles.chip}
+            >
+              <div id="nueva-tarea-chips">
+                <h4 id="nueva-tarea-titulo">{dato.tarea}</h4>
+                <hr className="style14"/>
+                <h4 className="nueva-tarea-desc">Encargado: {dato.encargado}</h4>
+                <p className="nueva-tarea-desc">Descripcion: {dato.descripcion}</p>
+              </div>
+            </Chip>
+           );
+         })
+        }
       </div>
     )
   }
@@ -67,6 +106,12 @@ class DialogTarea extends Component{
   }
   state = {
     open: false,
+    arreglo:[],
+    tarea:"",
+    descripcion:"",
+    encargado:"",
+    value:0,
+    personal:["Seleccione al encargado","Juan Perez","Juana Lopez", "Jose Gonzales"]
   };
 
   handleOpen = () => {
@@ -74,8 +119,40 @@ class DialogTarea extends Component{
   };
 
   handleClose = () => {
-    this.setState({open: false});
+    this.setState({
+      open: false
+    });
   };
+
+  handleChangeEncargado = (event, index, value) => {
+    this.setState({
+      value:value,
+      encargado:this.state.personal[value],
+    });
+  }
+  handleCloseAceptar = () => {
+    let tarea = this.state.tarea;
+    let descripcion = this.state.descripcion;
+    let encargado = this.state.encargado;
+    this.setState({
+      arreglo: this.state.arreglo.concat([{tarea:tarea,
+                                           encargado:encargado,
+                                           descripcion:descripcion}]),
+      open: false,
+    });
+  };
+
+  handleChangeTarea = (event) => {
+     this.setState({
+       tarea:event.target.value
+     });
+   }
+
+   handleChangeDescripcion = (event) => {
+      this.setState({
+        descripcion:event.target.value
+      });
+    }
 
   render(){
     const actions = [
@@ -88,7 +165,7 @@ class DialogTarea extends Component{
      <FlatButton
        label="Aceptar"
        primary={true}
-       onTouchTap={this.handleClose}
+       onTouchTap={this.handleCloseAceptar}
        style={styles.dialogButton}
      />,
    ];
@@ -109,11 +186,24 @@ class DialogTarea extends Component{
             >
               <div id="admin-dialog">
                 <h4>Encargado:</h4>
-                <SelectFieldTarea />
+                <SelectField
+                  value={this.state.value}
+                  onChange={this.handleChangeEncargado}
+                  style={styles.dialog}
+                  selectedMenuItemStyle={ {backgroundColor: '#C7B99C', color: '#FFFFFF'} }
+                >
+                {this.state.personal.map((persona,key)=>{
+                  return (
+                    <MenuItem value={key} key={key} primaryText={this.state.personal[key]}/>
+                   );
+                 })
+                }
+                </SelectField>
                 <h4>Tarea:</h4>
                 <TextField
                   style={styles.dialog}
                   underlineFocusStyle={{borderColor: "#DED5B8"}}
+                  onChange={this.handleChangeTarea}
                 />
                 <h4>Descripción:</h4>
                 <TextField
@@ -122,11 +212,13 @@ class DialogTarea extends Component{
                   multiLine={true}
                   rows={2}
                   rowsMax={4}
+                  onChange={this.handleChangeDescripcion}
                 />
               </div>
             </Dialog>
           </div>
         </div>
+        <Chips datos={this.state.arreglo} />
       </div>
     )
   }
