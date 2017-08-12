@@ -9,6 +9,18 @@ import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
 
+const styles = {
+  chip: {
+    width:'100%',
+    borderRadius:0,
+    borderBottom: 'thick solid white',
+  },
+  wrapper: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+};
+
 class ItemTareaRealizada extends Component{
   constructor(){
     super()

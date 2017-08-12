@@ -1,0 +1,38 @@
+div#user-tarea h2 {
+  font-size: 100%;
+  font-style: inherit;
+  font-weight: 500;
+  color: #375152;
+}
+
+div#user-tarea-radiobuttons {
+    text-align: initial;
+    margin-left: 115px;
+    margin-top: 33px;
+    margin-bottom: 35px;
+}
+
+div#user-tarea-button button{
+  background-color:#2C434B !important;
+}
+
+div#user-tarea-evidencia h2 {
+    text-align: center;
+    padding-top: 10px;
+    color: white;
+}
+
+div#user-tarea-evidencia {
+    height: 100%;
+    background-color: #2C434B;
+}
+
+div#user-tarea-evidencia ul {
+    color: white;
+    list-style: none;
+    padding: 0;
+}
+
+div#user-tarea-radiobuttons svg{
+  fill:#2C434B !important;
+}

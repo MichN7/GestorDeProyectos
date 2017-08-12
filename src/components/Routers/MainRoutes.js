@@ -5,6 +5,8 @@ import AdminRoute from './AdminRoute.js'
 import Login from '../Login.js'
 import NuevaTareaAdmin from '../Admin/NuevaTareaAdmin.js'
 import {ref,firebaseAuth} from '../../const.js'
+import UserRoutes from './UserRoutes.js'
+
 function PrivateRouteAdmin ({component: Component, authed,user, ...rest}) {
   return (
     <Route
@@ -59,6 +61,7 @@ class Routes extends Component{
   <Switch>
     <PublicRoute exact authed={this.state.autenticado} path="/" component={Login}/>
     <PrivateRouteAdmin user={this.state.user } authed={this.state.autenticado} path="/admin" component={AdminRoute}/>
+    <PrivateRouteAdmin user={this.state.user } authed={this.state.autenticado} path="/user" component={UserRoutes}/>
     <Route render={()=><h3> Ocurrió un error </h3>}/>
   </Switch>
 );
