@@ -5,12 +5,13 @@ import AdminRoute from './AdminRoute.js'
 import Login from '../Login.js'
 import NuevaTareaAdmin from '../Admin/NuevaTareaAdmin.js'
 import {ref,firebaseAuth} from '../../const.js'
-function PrivateRoute ({component: Component, authed, ...rest}) {
+function PrivateRouteAdmin ({component: Component, authed,user, ...rest}) {
   return (
     <Route
       {...rest}
-      render={(props) => authed === true
+      render={(props) => authed === true &&  user === 'adan1995a@gmail.com'
         ? <Component {...props} />
+        : authed === true ? <Redirect to ={{pathname: '/user', state : {from: props.location}}}/>
         : <Redirect to={{pathname: '/' , state: {from: props.location}}} />}
     />
   )
@@ -30,12 +31,14 @@ function PublicRoute ({component: Component, authed, ...rest}) {
 class Routes extends Component{
   state={
     autenticado:false,
-    loading:true
+    loading:true,
+    user:''
   }
   componentWillMount(){
     this.removeListener=firebaseAuth.onAuthStateChanged((user)=>{
       if(user){
         this.setState({
+          user:user.email,
           autenticado:true,
           loading:false
         })
@@ -45,7 +48,6 @@ class Routes extends Component{
           autenticado:false,
           loading:false
         })
-        console('hola');
       }
     })
   }
@@ -56,7 +58,7 @@ class Routes extends Component{
     return this.state.loading === true ? <h1>Loading</h1> :(
   <Switch>
     <PublicRoute exact authed={this.state.autenticado} path="/" component={Login}/>
-    <PrivateRoute  authed={this.state.autenticado} path="/admin" component={AdminRoute}/>
+    <PrivateRouteAdmin user={this.state.user } authed={this.state.autenticado} path="/admin" component={AdminRoute}/>
     <Route render={()=><h3> Ocurrió un error </h3>}/>
   </Switch>
 );

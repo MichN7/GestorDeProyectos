@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-
+import {ref,firebaseAuth} from '../../const.js'
 //CSS
 import './NuevaTareaAdmin.css'
 import TextField from 'material-ui/TextField';
@@ -24,6 +24,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
   import DatePicker from 'material-ui/DatePicker';
   import areIntlLocalesSupported from 'intl-locales-supported';
   import persianUtils from 'material-ui-persian-date-picker-utils';
+  var id = require('shortid');
 
   const styles = {
     addButton:{
@@ -104,8 +105,9 @@ class Chips extends Component{
 }
 
 class DialogTarea extends Component{
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
+
   }
   state = {
     open: false,
@@ -117,6 +119,8 @@ class DialogTarea extends Component{
     dia:"",
     personal:["Seleccione al encargado","Juan Perez","Juana Lopez", "Jose Gonzales"]
   };
+
+
 
   handleOpen = () => {
     this.setState({open: true});
@@ -147,7 +151,8 @@ class DialogTarea extends Component{
       arreglo: this.state.arreglo.concat([{tarea:tarea,
                                            encargado:encargado,
                                            dia:dia,
-                                           descripcion:descripcion}]),
+                                           descripcion:descripcion,
+                                           id:id.generate()}]),
       open: false,
     });
   };
@@ -178,6 +183,33 @@ class DialogTarea extends Component{
        this.setState({
         dia:fechaFormat
        })
+  }
+  addTask= ()=>{
+    var user =firebaseAuth.currentUser;
+    var userDB = user.email.split('.').join('-');
+    var referencia= ref.child('ingTala/'+userDB+'/tareasActuales');
+    var referenciaTarea=referencia.push();
+    var uniqueKey=referenciaTarea.key;
+    referenciaTarea.set({
+      tarea:this.props.tarea,
+      descripcion:this.props.descripcion,
+      id:this.props.id
+    })
+    var refSubTarea=ref.child('ingTala/'+userDB+'/tareasActuales/'+uniqueKey);
+    var refSub=refSubTarea.push();
+    this.state.arreglo.map(it=>{
+
+      refSub.push({
+        tarea:it.tarea,
+        encargado:it.encargado,
+        descripcion:it.descripcion,
+        fecha:it.dia,
+        id:it.id
+      })
+        console.log(it);
+    })
+    alert("listo");
+
   }
 
   render(){
@@ -254,7 +286,8 @@ class DialogTarea extends Component{
         </div>
         <Chips datos={this.state.arreglo} funEliminar={this.eliminarChip.bind(this)} />
         <div id="admin-dialog-button">
-          <RaisedButton label="Aceptar" primary={true} style={{marginTop:'15%'}}/>
+          <RaisedButton label="Aceptar" primary={true} style={{marginTop:'15%'}}
+          onTouchTap={this.addTask}/>
         </div>
       </div>
     )
@@ -265,6 +298,24 @@ class NuevaTarea extends Component {
   constructor() {
     super()
   }
+  state={
+    nombreTarea:'',
+    descripcion:'',
+    id:id.generate()
+  }
+  deskTask = (e)=>{
+    e.preventDefault();
+    console.log(e.target.value);
+    this.setState({
+      descripcion:e.target.value
+    })
+  }
+  nombreTask = (e)=>{
+    e.preventDefault();
+    this.setState({
+      nombreTarea:e.target.value
+    })
+  }
   render(){
     return(
       <div id="admin-nueva-tarea">
@@ -272,6 +323,7 @@ class NuevaTarea extends Component {
           <h2>Nombre de tarea</h2>
           <TextField
             underlineFocusStyle={{borderColor: "#DED5B8"}}
+            onChange={this.nombreTask}
           />
         </div>
         <div id="admin-descripcion-tarea">
@@ -281,9 +333,10 @@ class NuevaTarea extends Component {
             multiLine={true}
             rows={2}
             rowsMax={4}
+            onChange={this.deskTask}
           />
         </div>
-        <DialogTarea />
+        <DialogTarea tarea={this.state.nombreTarea} descripcion={this.state.descripcion}  id={this.state.id} />
       </div>
     )
   }
