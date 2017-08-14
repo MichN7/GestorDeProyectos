@@ -4,6 +4,9 @@ import React, {Component} from 'react'
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
+//react-icons
+import MdGetApp from 'react-icons/lib/md/get-app'
+
 import './AdminTarea.css'
 
 const styles = {
@@ -50,7 +53,7 @@ class AdminTarea extends Component{
         <h2><strong> Notas: </strong> {this.state.arrayInfoTareaSecundaria[0].notas}</h2>
         <div id="admin-tarea-evidencia">
           <h2><strong> Evidencia: </strong></h2>
-          <h2><a href="#">{this.state.arrayInfoTareaSecundaria[0].file}</a></h2>
+          <h2><a href="#">{this.state.arrayInfoTareaSecundaria[0].file}<MdGetApp /></a></h2>
         </div>
         <h2><strong> Status: </strong> {this.state.arrayInfoTareaSecundaria[0].status}</h2>
         <div id="admin-tarea-button">
