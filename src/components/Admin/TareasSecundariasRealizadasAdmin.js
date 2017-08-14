@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-
+import {Link} from 'react-router-dom'
 //material-ui components
 import Chip from 'material-ui/Chip';
 
@@ -30,6 +30,7 @@ class ChipsSecundariasRealizadas extends Component {
         {this.props.datos.map((dato,key)=>{
           return(
             <div id="tareas-secundaria-activas-chips">
+              <Link to={`/admin/revisar-tareas/tareaID`}>
               <Chip
                 style={styles.chip}
                 key={key}
@@ -41,6 +42,7 @@ class ChipsSecundariasRealizadas extends Component {
                   <h4 className="nueva-tarea-desc"><strong>Status: </strong> {dato.status}</h4>
                 </div>
               </Chip>
+              </Link>
             </div>
           )
         })}

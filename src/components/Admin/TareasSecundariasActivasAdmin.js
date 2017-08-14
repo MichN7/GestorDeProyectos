@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-
+import {Link} from 'react-router-dom'
 //CSS
 import './TareasSecundariasActivasAdmin.css'
 
@@ -34,6 +34,7 @@ class ChipsSecundariasActivas extends Component {
         {this.props.datos.map((dato,key)=>{
           return(
             <div id="tareas-secundaria-activas-chips">
+            <Link to={`/admin/revisar-tareas/tareaID`}>
               <Chip
                 style={styles.chip}
                 key={key}
@@ -45,6 +46,7 @@ class ChipsSecundariasActivas extends Component {
                   <h4 className="nueva-tarea-desc"><strong>Status: </strong> {dato.status}</h4>
                 </div>
               </Chip>
+              </Link>
             </div>
           )
         })}

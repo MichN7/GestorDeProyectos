@@ -22,3 +22,7 @@ div#tareas-secundaria-activas h3 {
     color: #C7B99C;
     font-weight: unset;
 }
+
+div#tareas-secundaria-activas-chips a {
+  text-decoration: none;
+}

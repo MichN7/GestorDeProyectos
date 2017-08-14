@@ -9,6 +9,8 @@ import TareasPrincipalesRealizadasAdmin from '../Admin/TareasPrincipalesRealizad
 import TareasSecundariasRealizadasAdmin from '../Admin/TareasSecundariasRealizadasAdmin.js'
 import TareasSecundariasActivasAdmin from '../Admin/TareasSecundariasActivasAdmin.js'
 
+import AdminTarea from '../Admin/AdminTarea.js'
+
 const AdminRevisarTareaRoutes = () => (
   <Switch>
     <Route exact path='/admin/revisar-tareas' component={RevisarTareaAdmin}/>
@@ -16,6 +18,7 @@ const AdminRevisarTareaRoutes = () => (
     <Route path='/admin/revisar-tareas/tareas-principales-realizadas' component={TareasPrincipalesRealizadasAdmin}/>
     <Route path='/admin/revisar-tareas/tareas-secundaria-activas' component={TareasSecundariasActivasAdmin} />
     <Route path='/admin/revisar-tareas/tareas-secundaria-realizadas' component={TareasSecundariasRealizadasAdmin} />
+    <Route path='/admin/revisar-tareas/tareaID' component={AdminTarea} />
   </Switch>
 )
 

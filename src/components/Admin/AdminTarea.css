@@ -1,0 +1,25 @@
+div#admin-tarea-button button{
+  background-color:#2C434B !important;
+}
+
+div#admin-tarea h2 {
+    text-align: center;
+    padding-top: 10px;
+    color: #2C434B;
+    font-weight: normal;
+    font-size: medium;
+}
+
+div#admin-tarea-evidencia {
+    height: 100%;
+    background-color: #2C434B;
+    color: white;
+}
+
+div#admin-tarea-evidencia h2 {
+    color: white;
+}
+div#admin-tarea-evidencia a {
+    color: white;
+    text-decoration: underline;
+}
