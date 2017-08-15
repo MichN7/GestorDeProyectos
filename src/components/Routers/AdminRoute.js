@@ -15,6 +15,7 @@ const AdminRoute = () => (
     <Route exact path='/admin' component={MenuAdmin}/>
     <Route path='/admin/nueva-tarea' component={NuevaTareaAdmin}/>
     <Route path='/admin/revisar-tareas' component={AdminRevisarTareaRoutes}/>
+    <Route path='/admin/revisar-tareas' component={AdminRevisarTareaRoutes}/>
     <Route path='/admin/agregar-usuario' component={AgregarUsuarioAdmin}/>
     <a onClick={() => firebaseAuth().signOut() } href="/admin">Salir</a>
   </Switch>

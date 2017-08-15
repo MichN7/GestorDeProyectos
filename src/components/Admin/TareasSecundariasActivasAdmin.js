@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
+import {ref,firebaseAuth} from '../../const.js'
 //CSS
 import './TareasSecundariasActivasAdmin.css'
 
@@ -34,7 +35,7 @@ class ChipsSecundariasActivas extends Component {
         {this.props.datos.map((dato,key)=>{
           return(
             <div id="tareas-secundaria-activas-chips">
-            <Link to={`/admin/revisar-tareas/tareaID`}>
+            <Link to={`/admin/revisar-tareas/tareaID/`+dato.id}>
               <Chip
                 style={styles.chip}
                 key={key}
@@ -56,21 +57,54 @@ class ChipsSecundariasActivas extends Component {
 }
 
 class TareasSecundariasActivasAdmin extends Component {
-  constructor() {
+  constructor({match}) {
     super()
     this.state ={
       datosTareaPrincipal:[{nombre:'Realizar proyecto ambiental',status:'En proceso'}],
-      datosTareasSecundarias:[{nombre:'Colectar basura',encargado:'José Lopez',status:'En proceso'},
-                              {nombre:'Colectar basura',encargado:'José Lopez',status:'En proceso'},
-                              {nombre:'Colectar basura',encargado:'José Lopez',status:'En proceso'}]
+      datosTareasSecundarias:[],
+      ruta:`${match.params.id}`,
+
     }
+  }
+  componentWillMount(){
+    var self=this;
+    var arrayDatos=[];
+    var user =firebaseAuth.currentUser;
+    var userDB = user.email.split('.').join('-');
+    var refTareasActuales=ref.child('ingTala/'+userDB+'/tareasActuales');
+    var promise= new Promise(
+      function(resolve,reject){
+    refTareasActuales.on('value',snapshot=>{
+      snapshot.forEach(function(snapChild){
+        if(snapChild.val().id===self.state.ruta){
+          console.log(snapChild.val());
+          snapChild.forEach(function(snapBaby){//falta status en el json
+              console.log(snapBaby.val());
+            snapBaby.forEach(function(baby){
+              resolve (arrayDatos= arrayDatos.concat([{nombre:baby.val().tarea,encargado:baby.val().encargado,id:baby.val().id}]));
+            })//cierre snapBaby foreach
+          })//cierre foreach baby
+        }//cierre if
+      })//cierre snapChild
+    })//cierre  snapshot
+  }//cierre function
+  )
+  promise.then(
+    function(){
+      self.setState({
+        datosTareasSecundarias:arrayDatos
+      })
+    }
+
+  )
+
   }
   render(){
     return(
       <div id="tareas-secundaria-activas">
         <h2>{this.state.datosTareaPrincipal[0].nombre}</h2>
         <h3>Status: {this.state.datosTareaPrincipal[0].status}</h3>
-        <ChipsSecundariasActivas datos={this.state.datosTareasSecundarias}/>
+        <ChipsSecundariasActivas datos={this.state.datosTareasSecundarias} />
       </div>
     )
   }
