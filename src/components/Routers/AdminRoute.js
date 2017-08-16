@@ -1,6 +1,6 @@
 import React from 'react'
 import {Switch, Route} from 'react-router-dom'
-
+import {ref,firebaseAuth} from '../../const.js'
 //Route
 import AdminRevisarTareaRoutes from './AdminRevisarTareaRoutes.js'
 
@@ -16,6 +16,7 @@ const AdminRoute = () => (
     <Route path='/admin/nueva-tarea' component={NuevaTareaAdmin}/>
     <Route path='/admin/revisar-tareas' component={AdminRevisarTareaRoutes}/>
     <Route path='/admin/agregar-usuario' component={AgregarUsuarioAdmin}/>
+    <a onClick={() => firebaseAuth().signOut() } href="/admin">Salir</a>
   </Switch>
 )
 

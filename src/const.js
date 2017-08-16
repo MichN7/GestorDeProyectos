@@ -1,5 +1,5 @@
 import * as firebase from 'firebase'
-var config = {
+export var config = {
     apiKey: "AIzaSyCLwWkQaStb4JrFriPjQg1ZHm0U_V-gLhw",
     authDomain: "gestorproyectos-db75f.firebaseapp.com",
     databaseURL: "https://gestorproyectos-db75f.firebaseio.com",
@@ -11,4 +11,4 @@ var config = {
   firebase.initializeApp(config);
 
   export const ref = firebase.database().ref();
-  export const firebaseAuth = firebase.auth;
+  export const firebaseAuth = firebase.auth();

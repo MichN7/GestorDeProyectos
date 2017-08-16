@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
-
+import {ref,firebaseAuth} from '../const.js'
 //css
 import './Login.css'
-
 //material-ui components
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -21,6 +20,41 @@ const styles = {
 class Login extends Component{
   constructor(){
     super()
+
+  }
+    state = {
+      email:'',
+      password:''
+    }
+
+ autenticar =() =>{
+    firebaseAuth.signInWithEmailAndPassword(this.state.email, this.state.password)
+    .catch(function(error){
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      if (errorCode === 'auth/wrong-password') {
+
+              alert('contraseña incorrecta');
+          }
+      else if(errorCode==='auth/user-not-found'){
+            alert('Usuario inexistente');
+      }
+          else {
+                  alert(errorMessage);
+                }
+                console.log(error);
+
+    });
+  }
+  user =(event) =>{
+    this.setState({
+      email:event.target.value
+    })
+  }
+  pass =(event) =>{
+    this.setState({
+      password:event.target.value
+    })
   }
   render(){
     return(
@@ -30,6 +64,7 @@ class Login extends Component{
             <h2>Correo</h2>
             <TextField
               underlineFocusStyle={{borderColor: "#DED5B8"}}
+              onChange={this.user}
             />
           </div>
           <div id="login-password">
@@ -37,11 +72,13 @@ class Login extends Component{
             <TextField
               underlineFocusStyle={{borderColor: "#DED5B8"}}
               type="password"
+              onChange={this.pass}
             />
           </div>
-          <Link to="admin">
-            <RaisedButton label="Aceptar" primary={true}/>
-          </Link>
+
+            <RaisedButton label="Aceptar" primary={true}
+            onTouchTap={this.autenticar}/>
+
         </div>
       </div>
     )
