@@ -60,7 +60,7 @@ class TareasSecundariasActivasAdmin extends Component {
   constructor({match}) {
     super()
     this.state ={
-      datosTareaPrincipal:[{nombre:'Realizar proyecto ambiental',status:'En proceso'}],
+      datosTareaPrincipal:[{nombre:'', status:''}],
       datosTareasSecundarias:[],
       ruta:`${match.params.id}`,
 
@@ -72,6 +72,7 @@ class TareasSecundariasActivasAdmin extends Component {
     var user =firebaseAuth.currentUser;
     var userDB = user.email.split('.').join('-');
     var refTareasActuales=ref.child('ingTala/'+userDB+'/tareasActuales');
+    var taskName=[{nombre:'',status:''}];
     var promise= new Promise(
       function(resolve,reject){
     refTareasActuales.on('value',snapshot=>{
@@ -81,7 +82,11 @@ class TareasSecundariasActivasAdmin extends Component {
           snapChild.forEach(function(snapBaby){//falta status en el json
               console.log(snapBaby.val());
             snapBaby.forEach(function(baby){
-              resolve (arrayDatos= arrayDatos.concat([{nombre:baby.val().tarea,encargado:baby.val().encargado,id:baby.val().id}]));
+              resolve (
+                arrayDatos= arrayDatos.concat([{nombre:baby.val().tarea,encargado:baby.val().encargado,id:baby.val().id}]),
+                taskName[0].nombre =snapChild.val().tarea,
+                taskName[0].status='en proceso'
+              );
             })//cierre snapBaby foreach
           })//cierre foreach baby
         }//cierre if
@@ -92,7 +97,8 @@ class TareasSecundariasActivasAdmin extends Component {
   promise.then(
     function(){
       self.setState({
-        datosTareasSecundarias:arrayDatos
+        datosTareasSecundarias:arrayDatos,
+        datosTareaPrincipal:taskName
       })
     }
 

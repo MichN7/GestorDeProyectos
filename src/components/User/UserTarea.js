@@ -68,7 +68,10 @@ class UserTarea extends Component {
       arrayPreview:[],
       arrayNames:[],
       arrayInfoTarea:[{tarea:"Hacer Nominas", descripcion:"Anotarlas con letra clara."}],
-      Taskpath:`${match.match.params.id}`
+      Taskpath:`${match.match.params.id}`,
+      radioOne: false,
+      radioTwo: false,
+      radioThree: false
     }
   }
 
@@ -138,6 +141,32 @@ class UserTarea extends Component {
   handleClickFile = () =>{
 
   }
+  getValue = (e) =>{
+    alert(e.target.value);
+    let value = e.target.value;
+    if(value === "Recibido"){
+      this.setState({
+        radioOne:true,
+        radioTwo:false,
+        radioThree:false,
+        radioVal: value,
+      })
+    }else if (value === "En proceso") {
+      this.setState({
+        radioOne: false,
+        radioTwo: true,
+        radioThree: false,
+        radioVal: value,
+      })
+    }else if (value === "Completado") {
+      this.setState({
+        radioOne: false,
+        radioTwo: false,
+        radioThree: true,
+        radioVal: value,
+      })
+    }
+  }
 
   render(){
     return(
@@ -176,7 +205,7 @@ class UserTarea extends Component {
               </RaisedButton>
               </div>
           <div id="user-tarea-radiobuttons">
-            <RadioButtonGroup name="shipSpeed" defaultSelected="Recibido">
+            <RadioButtonGroup name="shipSpeed" defaultSelected="Recibido" onChange={this.getValue}>
                 <RadioButton
                   value="Recibido"
                   label="Recibido"
