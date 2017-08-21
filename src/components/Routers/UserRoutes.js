@@ -14,7 +14,7 @@ const UserRoutes = () => (
     <Route exact path='/user' component={MenuUser}/>
     <Route path='/user/tareas-pendients' component={TareasPendientesUser}/>
     <Route path='/user/tareas-realizadas' component={TareasRealizadasUser}/>
-    <Route path='/user/tareaID' component={UserTarea}/>
+    <Route path='/user/sub-tareas/:id' component={UserTarea}/>
     <a onClick={() => firebaseAuth().signOut() } href="/user">Salir</a>
   </Switch>
 )

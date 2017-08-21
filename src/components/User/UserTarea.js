@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-
+import {ref,firebaseAuth} from '../../const.js'
 //material ui components
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -59,7 +59,7 @@ class Files extends Component{
 }
 
 class UserTarea extends Component {
-  constructor() {
+  constructor(match) {
     super();
     this.state = {
       arregloArchivos : [],
@@ -68,7 +68,40 @@ class UserTarea extends Component {
       arrayPreview:[],
       arrayNames:[],
       arrayInfoTarea:[{tarea:"Hacer Nominas", descripcion:"Anotarlas con letra clara."}],
+      Taskpath:`${match.match.params.id}`
     }
+  }
+
+  componentWillMount(){
+    var self=this;
+    var user =firebaseAuth.currentUser;
+    var userDB = user.email.split('.').join('-');
+    var referencia= ref.child('ingTala/'+userDB+'/tareasActuales');
+    var array=[];
+    var promise=new Promise(
+      function(resolve,reject){
+      referencia.on('value',snapshot=>{
+        snapshot.forEach(snapChild=>{
+          snapChild.forEach(snapBaby=>{
+            if(snapBaby.val().id==self.state.Taskpath){
+              resolve (array= array.concat([{tarea:snapBaby.val().tarea,descripcion:snapBaby.val().descripcion,fecha:snapBaby.val().fecha}]));
+
+            }
+          })
+        })
+      })
+      }
+    )
+
+    promise.then(
+      function(array){
+        console.log(array);
+        self.setState({
+          arrayInfoTarea:array
+        })
+        console.log('listo');
+      }
+    )
   }
 
   handleOnChangeInput = (event) =>{
@@ -111,7 +144,7 @@ class UserTarea extends Component {
       <div id="user-tarea">
         <h2><strong> Tarea: </strong> {this.state.arrayInfoTarea[0].tarea}</h2>
           <h2><strong> Descripcion: </strong> {this.state.arrayInfoTarea[0].descripcion}</h2>
-          <h2><strong> Notas: </strong></h2>
+          <h2><strong> Fecha: </strong>{this.state.arrayInfoTarea[0].fecha}</h2>
             <TextField
               underlineFocusStyle={{borderColor: "#DED5B8"}}
               multiLine={true}

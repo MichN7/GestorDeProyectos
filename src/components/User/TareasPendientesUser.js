@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-
+import {ref,firebaseAuth} from '../../const.js'
 import Chip from 'material-ui/Chip';
 import './TareasPendientesUser.css'
 
@@ -33,7 +33,7 @@ class ChipsTareasPendientes extends Component {
         {this.props.datos.map((dato,key)=>{
           return(
             <div id="tareas-pendients-chips">
-              <Link to={`/user/tareaID`}>
+              <Link to={`/user/sub-tareas/`+dato.id}>
                 <Chip
                   style={styles.chip}
                   key={key}
@@ -58,10 +58,34 @@ class TareasPendientesUser extends Component {
   constructor() {
     super()
     this.state ={
-      datosTareasSecundarias:[{nombre:'Colectar basura',encargado:'José Lopez',status:'En proceso'},
-                              {nombre:'Colectar basura',encargado:'José Lopez',status:'En proceso'},
-                              {nombre:'Colectar basura',encargado:'José Lopez',status:'En proceso'}]
+      datosTareasSecundarias:[]
     }
+  }
+
+  componentWillMount(){
+    var user =firebaseAuth.currentUser;
+    var self=this;
+    var userDB = user.email.split('.').join('-');
+    var refUsers=ref.child('ingTala/'+userDB+'/tareasActuales');
+    var arrayDatos=[];
+    var promise=new Promise(
+      function(resolve,reject){
+        refUsers.on('value', snapshot=>{
+          snapshot.forEach(snapChild=>{
+            snapChild.forEach(snapBaby=>{
+            resolve (arrayDatos= arrayDatos.concat([{nombre:snapBaby.val().tarea,descripcion:snapBaby.val().descripcion,status:snapBaby.val().status,id:snapBaby.val().id}]));
+            })
+          })
+        })
+      }
+    )
+    promise.then(
+      function(){
+        self.setState({
+          datosTareasSecundarias:arrayDatos
+        })
+      }
+    )
   }
   render(){
     return(
