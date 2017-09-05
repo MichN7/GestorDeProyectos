@@ -4,6 +4,7 @@ import {ref,firebaseAuth} from '../../const.js'
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import { Form} from 'react-bootstrap';
 
 //icons
 import FaChain from 'react-icons/lib/fa/chain'
@@ -71,9 +72,11 @@ class UserTarea extends Component {
       Taskpath:`${match.match.params.id}`,
       radioOne: false,
       radioTwo: false,
-      radioThree: false
+      radioThree: false,
+      notas:"",
     }
   }
+
 
   componentWillMount(){
     var self=this;
@@ -107,6 +110,29 @@ class UserTarea extends Component {
     )
   }
 
+  Formulario=()=>{
+    var self=this;
+    var tare = self.state.arrayInfoTarea[0].tarea;
+
+
+    var user =firebaseAuth.currentUser;
+    var userDB = user.email.split('.').join('-');
+    var refDB= ref.child('ingTala/'+userDB+'/tareasActuales/'+tare);
+    refDB.set({
+      descripcion:self.state.arrayInfoTarea[0].descripcion,
+      encargado:user,
+      fecha:self.state.date,
+      id: self.state.Taskpath,
+      status:self.state.radioVal,
+      tarea:tare,
+      notas:self.state.notas,
+    });
+
+
+
+  }
+
+
   handleOnChangeInput = (event) =>{
     let reader = new FileReader();
   	let file = event.target.files[0];
@@ -138,9 +164,6 @@ class UserTarea extends Component {
       })
   }
 
-  handleClickFile = () =>{
-
-  }
   getValue = (e) =>{
     alert(e.target.value);
     let value = e.target.value;
@@ -167,6 +190,11 @@ class UserTarea extends Component {
       })
     }
   }
+  handleChangeNotas = (event) => {
+     this.setState({
+       notas:event.target.value
+     });
+   }
 
   render(){
     return(
@@ -174,9 +202,11 @@ class UserTarea extends Component {
         <h2><strong> Tarea: </strong> {this.state.arrayInfoTarea[0].tarea}</h2>
           <h2><strong> Descripcion: </strong> {this.state.arrayInfoTarea[0].descripcion}</h2>
           <h2><strong> Fecha: </strong>{this.state.arrayInfoTarea[0].fecha}</h2>
+
             <TextField
               underlineFocusStyle={{borderColor: "#DED5B8"}}
               multiLine={true}
+              onChange={this.handleChangeNotas}
               rows={2}
               rowsMax={4}
             />
@@ -225,7 +255,7 @@ class UserTarea extends Component {
             </RadioButtonGroup>
           </div>
           <div id="user-tarea-button">
-              <RaisedButton label="Enviar"primary={true}/>
+              <RaisedButton label="Enviar"primary={true} onTouchTap={this.Formulario}/>
           </div>
       </div>
     )

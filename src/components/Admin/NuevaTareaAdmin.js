@@ -66,6 +66,7 @@ class Chips extends Component{
     };
   }
 
+
   handleRequestDelete = (key) => {
     if (key === 3) {
       alert('Why would you want to delete React?! :)');
@@ -107,21 +108,45 @@ class Chips extends Component{
 class DialogTarea extends Component{
   constructor(props){
     super(props)
-
+  this.state = {
+      open: false,
+      arreglo:[],
+      tarea:"",
+      descripcion:"",
+      encargado:"",
+      value:0,
+      dia:"",
+      personal:["Seleccione al encargado"],
+      admin:"",
+    }
   }
-  state = {
-    open: false,
-    arreglo:[],
-    tarea:"",
-    descripcion:"",
-    encargado:"",
-    value:0,
-    dia:"",
-    personal:["Seleccione al encargado","Juan Perez","Juana Lopez", "Jose Gonzales"]
-  };
+  componentWillMount(){
+    var self=this;
+    var arrayDatosNombres=[];
+    var user =firebaseAuth.currentUser;
+    var userDB = user.email.split('.').join('-');
+    var refTareasActuales=ref.child('ingTala/'+userDB+'/usuarios');
+    var promise= new Promise(
+      function(resolve,reject){
+    refTareasActuales.on('value',snapshot=>{
+      snapshot.forEach(function(child){
+        resolve(
+        arrayDatosNombres= arrayDatosNombres.concat([child.val().email]),
 
+               );
+            })
+        })
+    }
+  )
+    promise.then(
+      function(){
+        self.setState({
+          personal:self.state.personal.concat(arrayDatosNombres),
 
-
+          })
+        }
+     )
+  }
   handleOpen = () => {
     this.setState({open: true});
   };
@@ -207,6 +232,23 @@ class DialogTarea extends Component{
         id:it.id
       })
         console.log(it);
+    })
+
+    this.state.arreglo.map(it=>{
+
+      var refSubTareaUsuario=ref.child('ingTala/'+it.encargado.split('.').join('-')+'/tareasActuales/'+uniqueKey); //pediente de revisar uniquekey
+
+      refSubTareaUsuario.push({
+        supertarea:uniqueKey,
+        tarea:it.tarea,
+        admin:firebaseAuth.currentUser,
+        encargado:it.encargado,
+        descripcion:it.descripcion,
+        fecha:it.dia,
+        id:it.id
+      })
+
+
     })
     alert("listo");
 
