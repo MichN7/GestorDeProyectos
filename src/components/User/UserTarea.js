@@ -82,7 +82,7 @@ class UserTarea extends Component {
     var self=this;
     var user =firebaseAuth.currentUser;
     var userDB = user.email.split('.').join('-');
-    var referencia= ref.child('ingTala/'+userDB+'/tareasActuales');
+    var referencia= ref.child('ingTala/'+userDB+'/tareasPendientes');
     var array=[];
     var promise=new Promise(
       function(resolve,reject){

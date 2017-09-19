@@ -229,23 +229,25 @@ class DialogTarea extends Component{
         encargado:it.encargado,
         descripcion:it.descripcion,
         fecha:it.dia,
-        id:it.id
+        id:it.id,
+        status:"enviado"
       })
         console.log(it);
     })
 
     this.state.arreglo.map(it=>{
-
-      var refSubTareaUsuario=ref.child('ingTala/'+it.encargado.split('.').join('-')+'/tareasActuales/'+uniqueKey); //pediente de revisar uniquekey
+      var usuarioAdmin=firebaseAuth.currentUser.email;
+      var refSubTareaUsuario=ref.child('ingTala/'+it.encargado.split('.').join('-')+'/tareasPendientes/'+uniqueKey); //pediente de revisar uniquekey
 
       refSubTareaUsuario.push({
         supertarea:uniqueKey,
         tarea:it.tarea,
-        admin:firebaseAuth.currentUser,
+        admin:usuarioAdmin,
         encargado:it.encargado,
         descripcion:it.descripcion,
         fecha:it.dia,
-        id:it.id
+        id:it.id,
+        status:"enviado"
       })
 
 

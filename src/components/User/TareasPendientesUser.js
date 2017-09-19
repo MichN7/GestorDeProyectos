@@ -60,13 +60,14 @@ class TareasPendientesUser extends Component {
     this.state ={
       datosTareasSecundarias:[]
     }
+    alert('dg');
   }
 
   componentWillMount(){
-    var user =firebaseAuth.currentUser;
+    var user =firebaseAuth.currentUser.email;
     var self=this;
-    var userDB = user.email.split('.').join('-');
-    var refUsers=ref.child('ingTala/'+userDB+'/tareasActuales');
+    var userDB = user.split('.').join('-');
+    var refUsers=ref.child('ingTala/'+userDB+'/tareasPendientes');
     var arrayDatos=[];
     var promise=new Promise(
       function(resolve,reject){
