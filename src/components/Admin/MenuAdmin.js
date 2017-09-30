@@ -8,8 +8,14 @@ import MdAddCircle from 'react-icons/lib/md/add-circle'
 import MdAccountCircle from 'react-icons/lib/md/account-circle'
 import MdAssigment from 'react-icons/lib/md/assignment'
 
+import {ref , firebaseAuth} from '../../const.js'
+import * as firebase from 'firebase'
+
+
+
 const MenuAdmin = () => (
   <div id="admin">
+    <a onClick={() =>firebase.auth().signOut()} href="/">Salir</a>
     <Link to={`/admin/nueva-tarea`}>
       <div id="admin-agregar-tarea">
         <MdAddCircle size={35}/>

@@ -26,7 +26,7 @@ class ChipsSecundariasActivas extends Component {
   }
 
   handleTouchTapChip = () =>{
-    alert("Click al chip");
+    
   }
 
   render(){
@@ -83,7 +83,7 @@ class TareasSecundariasActivasAdmin extends Component {
               console.log(snapBaby.val());
             snapBaby.forEach(function(baby){
               resolve (
-                arrayDatos= arrayDatos.concat([{nombre:baby.val().tarea,encargado:baby.val().encargado,id:baby.val().id}]),
+                arrayDatos = arrayDatos.concat([{nombre:baby.val().tarea,encargado:baby.val().encargado,id:baby.val().id,status:baby.val().status}]),
                 taskName[0].nombre =snapChild.val().tarea,
                 taskName[0].status='en proceso'
               );

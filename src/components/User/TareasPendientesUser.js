@@ -24,7 +24,7 @@ class ChipsTareasPendientes extends Component {
   }
 
   handleTouchTapChip = () =>{
-    alert("Click al chip");
+
   }
 
   render(){
@@ -41,7 +41,7 @@ class ChipsTareasPendientes extends Component {
                 >
                   <div id='chip-tarea-sec-activa'>
                     <h4 id="nueva-tarea-titulo">{dato.nombre}</h4>
-                    <h4 className="nueva-tarea-desc"><strong>Encargado: </strong> {dato.encargado}</h4>
+                    <h4 className="nueva-tarea-desc"><strong>Descripcion: </strong> {dato.descripcion}</h4>
                     <h4 className="nueva-tarea-desc"><strong>Status: </strong> {dato.status}</h4>
                   </div>
                 </Chip>
@@ -60,7 +60,6 @@ class TareasPendientesUser extends Component {
     this.state ={
       datosTareasSecundarias:[]
     }
-    alert('dg');
   }
 
   componentWillMount(){

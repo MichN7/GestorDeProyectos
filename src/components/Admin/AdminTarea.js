@@ -43,7 +43,7 @@ class AdminTarea extends Component{
       arrayPreview:[],
       arrayNames:[],
       ruta:`${match.params.id}`,
-      arrayInfoTareaSecundaria:[{tarea:"Hacer Nominas", descripcion:"Anotarlas con letra clara.",notas:"blablabalbalbablabla",file:"loga.pdf",status:"En proceso"}],
+      arrayInfoTareaSecundaria:[{tarea:"", descripcion:"",notas:"",file:"",status:""}],
     }
   }
 
@@ -62,7 +62,7 @@ class AdminTarea extends Component{
               console.log(snapBaby.val());
             snapBaby.forEach(function(baby){
                 if(baby.val().id===self.state.ruta){
-              resolve (arrayDatos= arrayDatos.concat([{nombre:baby.val().tarea,descripcion:baby.val().descripcion,notas:baby.val().fecha}]));
+              resolve (arrayDatos= arrayDatos.concat([{nombre:baby.val().tarea,descripcion:baby.val().descripcion,notas:baby.val().fecha,status:baby.val().status}]));
             }
             })//cierre snapBaby foreach
           })//cierre foreach baby

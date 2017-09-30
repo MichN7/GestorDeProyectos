@@ -20,6 +20,7 @@ class ItemTareaActiva extends Component{
   }
 
   render(){
+
     return(
       <div className="tareas-principales-items">
         {this.props.datos.map((dato,key) =>{
@@ -66,7 +67,7 @@ class TareasPrincipalesActivas extends Component {
       function (resolve, reject){
      refTareasActuales.on('value', function(snapshot){
       snapshot.forEach(function(snapChild){
-        resolve (tareas= tareas.concat([{nombre:snapChild.val().tarea,descripcion:snapChild.val().descripcion,id:snapChild.val().id}]));
+        resolve (tareas= tareas.concat([{nombre:snapChild.val().tarea,descripcion:snapChild.val().descripcion,id:snapChild.val().id,status:snapChild.val().status}]));
 
         })
       })

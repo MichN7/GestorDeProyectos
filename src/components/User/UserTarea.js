@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import { Form} from 'react-bootstrap';
-
+import * as firebase from 'firebase'
 //icons
 import FaChain from 'react-icons/lib/fa/chain'
 import MdCancel from 'react-icons/lib/md/cancel'
@@ -68,12 +68,15 @@ class UserTarea extends Component {
       filePreviewUrl: [],
       arrayPreview:[],
       arrayNames:[],
-      arrayInfoTarea:[{tarea:"Hacer Nominas", descripcion:"Anotarlas con letra clara."}],
+      arrayInfoTarea:[{tarea:"", descripcion:"Anotarlas con letra clara."}],
       Taskpath:`${match.match.params.id}`,
       radioOne: false,
       radioTwo: false,
       radioThree: false,
+      radioVal: "Recibido",
       notas:"",
+      keyTareaPrimera:"",
+      keyTareaSegunda:"",
     }
   }
 
@@ -88,16 +91,21 @@ class UserTarea extends Component {
       function(resolve,reject){
       referencia.on('value',snapshot=>{
         snapshot.forEach(snapChild=>{
+          self.setState({
+            keyTareaPrimera:snapChild.key,
+          })
           snapChild.forEach(snapBaby=>{
+            self.setState({
+              keyTareaSegunda:snapBaby.key,
+            })
             if(snapBaby.val().id==self.state.Taskpath){
-              resolve (array= array.concat([{tarea:snapBaby.val().tarea,descripcion:snapBaby.val().descripcion,fecha:snapBaby.val().fecha}]));
+              resolve (array= array.concat([{tarea:snapBaby.val().tarea,descripcion:snapBaby.val().descripcion,fecha:snapBaby.val().fecha,admin:snapBaby.val().admin,supertarea:snapBaby.val().supertarea,id:snapBaby.val().id}]));
 
             }
           })
         })
       })
-      }
-    )
+    })
 
     promise.then(
       function(array){
@@ -105,6 +113,30 @@ class UserTarea extends Component {
         self.setState({
           arrayInfoTarea:array
         })
+
+        let admin = self.state.arrayInfoTarea[0].admin;
+        let adminDB = admin.split('.').join('-');
+        let supertarea = self.state.arrayInfoTarea[0].supertarea;
+        let id = self.state.arrayInfoTarea[0].id;
+        let count = 0;
+        var refDBadmin = ref.child('ingTala/'+adminDB+'/tareasActuales/'+supertarea+'/');
+        refDBadmin.on('value', function(snapshot) {
+          snapshot.forEach(snapChild =>{
+            if(count == 0){
+              self.setState({
+                keyTareaPrimeraAdmin: snapChild.key,
+              })
+              count = 1;
+            }
+            snapChild.forEach(snapBaby =>{
+              if(snapBaby.val().id === id){
+                self.setState({
+                  keyTareaSegundaAdmin: snapBaby.key,
+                })
+              }
+            })
+          })
+        });
         console.log('listo');
       }
     )
@@ -112,24 +144,31 @@ class UserTarea extends Component {
 
   Formulario=()=>{
     var self=this;
-    var tare = self.state.arrayInfoTarea[0].tarea;
-
-
+    var tarea = self.state.arrayInfoTarea[0].tarea;
     var user =firebaseAuth.currentUser;
     var userDB = user.email.split('.').join('-');
-    var refDB= ref.child('ingTala/'+userDB+'/tareasActuales/'+tare);
-    refDB.set({
-      descripcion:self.state.arrayInfoTarea[0].descripcion,
-      encargado:user,
-      fecha:self.state.date,
-      id: self.state.Taskpath,
-      status:self.state.radioVal,
-      tarea:tare,
-      notas:self.state.notas,
-    });
+    var adminDB = this.state.arrayInfoTarea[0].admin.split('.').join('-');
+    let supertarea = self.state.arrayInfoTarea[0].supertarea;
+    var status = this.state.radioVal;
+    var refDB= firebase.database().ref('ingTala/'+userDB+'/tareasPendientes/'+this.state.keyTareaPrimera+'/'+this.state.keyTareaSegunda+'/');
+    var refDBadmin = firebase.database().ref('ingTala/'+adminDB+'/tareasActuales/'+supertarea+'/'+this.state.keyTareaPrimeraAdmin+'/'+ this.state.keyTareaSegundaAdmin+'/');
 
-
-
+    if(self.state.radioVal=="Completado"){
+      alert("Se ha enviado al administrador, una vez que sea aprovada la tarea pasara a estar completa");
+      refDB.update({
+        status:"Por Confirmar",
+      });
+      refDBadmin.update({
+        status:"Por Confirmar",
+      });
+    }else{
+      refDB.update({
+        status: status,
+      });
+      refDBadmin.update({
+        status: status,
+      });
+    }
   }
 
 
@@ -165,7 +204,6 @@ class UserTarea extends Component {
   }
 
   getValue = (e) =>{
-    alert(e.target.value);
     let value = e.target.value;
     if(value === "Recibido"){
       this.setState({
@@ -174,7 +212,7 @@ class UserTarea extends Component {
         radioThree:false,
         radioVal: value,
       })
-    }else if (value === "En proceso") {
+    }else if (value === "En Proceso") {
       this.setState({
         radioOne: false,
         radioTwo: true,
@@ -202,7 +240,7 @@ class UserTarea extends Component {
         <h2><strong> Tarea: </strong> {this.state.arrayInfoTarea[0].tarea}</h2>
           <h2><strong> Descripcion: </strong> {this.state.arrayInfoTarea[0].descripcion}</h2>
           <h2><strong> Fecha: </strong>{this.state.arrayInfoTarea[0].fecha}</h2>
-
+          <h2><strong>Notas: </strong></h2>
             <TextField
               underlineFocusStyle={{borderColor: "#DED5B8"}}
               multiLine={true}

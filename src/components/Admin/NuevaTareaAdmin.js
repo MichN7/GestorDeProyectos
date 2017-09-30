@@ -177,7 +177,8 @@ class DialogTarea extends Component{
                                            encargado:encargado,
                                            dia:dia,
                                            descripcion:descripcion,
-                                           id:id.generate()}]),
+                                           id:id.generate(),
+                                          }]),
       open: false,
     });
   };
@@ -218,7 +219,8 @@ class DialogTarea extends Component{
     referenciaTarea.set({
       tarea:this.props.tarea,
       descripcion:this.props.descripcion,
-      id:this.props.id
+      id:this.props.id,
+      status:"En proceso"
     })
     var refSubTarea=ref.child('ingTala/'+userDB+'/tareasActuales/'+uniqueKey);
     var refSub=refSubTarea.push();
@@ -230,7 +232,7 @@ class DialogTarea extends Component{
         descripcion:it.descripcion,
         fecha:it.dia,
         id:it.id,
-        status:"enviado"
+        status:"Enviado"
       })
         console.log(it);
     })
@@ -247,7 +249,7 @@ class DialogTarea extends Component{
         descripcion:it.descripcion,
         fecha:it.dia,
         id:it.id,
-        status:"enviado"
+        status:"Enviado"
       })
 
 

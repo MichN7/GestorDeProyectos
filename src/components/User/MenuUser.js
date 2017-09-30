@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 
 import GoChecklist from 'react-icons/lib/go/checklist'
 import GoFileText from 'react-icons/lib/go/file-text'
+import * as firebase from 'firebase'
 
 class MenuUser extends Component {
   constructor() {
@@ -12,6 +13,7 @@ class MenuUser extends Component {
     return(
       <div>
       <div id="admin-revisar-tarea">
+        <a onClick={() =>firebase.auth().signOut()} href="/">Salir</a>
         <hr className="style14"/>
         <Link to={`/user/tareas-pendients`}>
           <div id="revisar-tareas-activas">
