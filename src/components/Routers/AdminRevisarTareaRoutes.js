@@ -17,7 +17,7 @@ const AdminRevisarTareaRoutes = () => (
     <Route path='/admin/revisar-tareas/tareas-principales-activas' component={TareasPrincipalesActivasAdmin}/>
     <Route path='/admin/revisar-tareas/tareas-principales-realizadas' component={TareasPrincipalesRealizadasAdmin}/>
     <Route path='/admin/revisar-tareas/tareas-secundaria-activas/:id' component={TareasSecundariasActivasAdmin} />
-    <Route path='/admin/revisar-tareas/tareas-secundaria-realizadas' component={TareasSecundariasRealizadasAdmin} />
+    <Route path='/admin/revisar-tareas/tareas-secundaria-realizadas/:id' component={TareasSecundariasRealizadasAdmin} />
     <Route path='/admin/revisar-tareas/tareaID/:id' component={AdminTarea} />
   </Switch>
 )

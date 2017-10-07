@@ -27,6 +27,7 @@ class ItemTareaActiva extends Component{
           return(
             <div>
               <Divider />
+              { dato.status == "Completado" ? '' :
               <Link to={'/admin/revisar-tareas/tareas-secundaria-activas/'+ dato.id }>
               <ListItem
                 primaryText={dato.nombre
@@ -39,6 +40,7 @@ class ItemTareaActiva extends Component{
                 }
               />
               </Link>
+            }
             </div>
           )
           })

@@ -26,7 +26,7 @@ class ChipsSecundariasActivas extends Component {
   }
 
   handleTouchTapChip = () =>{
-    
+
   }
 
   render(){
@@ -35,7 +35,9 @@ class ChipsSecundariasActivas extends Component {
         {this.props.datos.map((dato,key)=>{
           return(
             <div id="tareas-secundaria-activas-chips">
+
             <Link to={`/admin/revisar-tareas/tareaID/`+dato.id}>
+
               <Chip
                 style={styles.chip}
                 key={key}
@@ -48,6 +50,7 @@ class ChipsSecundariasActivas extends Component {
                 </div>
               </Chip>
               </Link>
+
             </div>
           )
         })}
@@ -69,6 +72,7 @@ class TareasSecundariasActivasAdmin extends Component {
   componentWillMount(){
     var self=this;
     var arrayDatos=[];
+    var tamArray = 0;
     var user =firebaseAuth.currentUser;
     var userDB = user.email.split('.').join('-');
     var refTareasActuales=ref.child('ingTala/'+userDB+'/tareasActuales');
@@ -78,12 +82,15 @@ class TareasSecundariasActivasAdmin extends Component {
     refTareasActuales.on('value',snapshot=>{
       snapshot.forEach(function(snapChild){
         if(snapChild.val().id===self.state.ruta){
-          console.log(snapChild.val());
+          self.setState({
+            keyTareaPrincipal: snapChild.key,
+          })
           snapChild.forEach(function(snapBaby){//falta status en el json
               console.log(snapBaby.val());
             snapBaby.forEach(function(baby){
               resolve (
                 arrayDatos = arrayDatos.concat([{nombre:baby.val().tarea,encargado:baby.val().encargado,id:baby.val().id,status:baby.val().status}]),
+                tamArray = arrayDatos.length,
                 taskName[0].nombre =snapChild.val().tarea,
                 taskName[0].status='en proceso'
               );
@@ -92,14 +99,33 @@ class TareasSecundariasActivasAdmin extends Component {
         }//cierre if
       })//cierre snapChild
     })//cierre  snapshot
-  }//cierre function
+  },//cierre function
+
   )
   promise.then(
     function(){
       self.setState({
         datosTareasSecundarias:arrayDatos,
-        datosTareaPrincipal:taskName
+        datosTareaPrincipal:taskName,
+        tamArray: tamArray,
       })
+
+      var user =firebaseAuth.currentUser;
+      var userDB = user.email.split('.').join('-');
+      var refAdmin=ref.child('ingTala/'+userDB+'/tareasActuales/'+self.state.keyTareaPrincipal);
+      alert(refAdmin);
+      let count = 0;
+      for (var i = 0; i < self.state.tamArray; i++) {
+
+        if(self.state.datosTareasSecundarias[i].status == "Completado"){
+            count += 1;
+        }
+      }
+      if(count == self.state.tamArray){
+        refAdmin.update({
+          status:"Completado",
+        })
+      }
     }
 
   )

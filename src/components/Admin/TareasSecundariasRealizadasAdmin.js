@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 //material-ui components
 import Chip from 'material-ui/Chip';
-
+import {ref,firebaseAuth} from '../../const.js'
 const styles = {
   chip: {
     width:'100%',
@@ -21,7 +21,7 @@ class ChipsSecundariasRealizadas extends Component {
   }
 
   handleTouchTapChip = () =>{
-    alert("Click al chip");
+
   }
 
   render(){
@@ -30,7 +30,7 @@ class ChipsSecundariasRealizadas extends Component {
         {this.props.datos.map((dato,key)=>{
           return(
             <div id="tareas-secundaria-activas-chips">
-              <Link to={`/admin/revisar-tareas/tareaID`}>
+              <Link to={`/admin/revisar-tareas/tareaID/`+dato.id}>
               <Chip
                 style={styles.chip}
                 key={key}
@@ -52,15 +52,58 @@ class ChipsSecundariasRealizadas extends Component {
 }
 
 class TareasSecundariasRealizadasAdmin extends Component {
-  constructor() {
+  constructor({match}) {
     super()
     this.state ={
-      datosTareaPrincipal:[{nombre:'Realizar proyecto ambiental',status:'Completado'}],
-      datosTareasSecundarias:[{nombre:'Colectar basura',encargado:'José Lopez',status:'Completado'},
-                              {nombre:'Colectar basura',encargado:'José Lopez',status:'Completado'},
-                              {nombre:'Colectar basura',encargado:'José Lopez',status:'Completado'}]
+      datosTareaPrincipal:[{nombre:'',status:''}],
+      datosTareasSecundarias:[],
+      ruta:`${match.params.id}`,
     }
   }
+  componentWillMount(){
+    var self=this;
+    var arrayDatos=[];
+    var tamArray = 0;
+    var user =firebaseAuth.currentUser;
+    var userDB = user.email.split('.').join('-');
+    var refTareasActuales=ref.child('ingTala/'+userDB+'/tareasActuales');
+    var taskName=[{nombre:'',status:''}];
+    var promise= new Promise(
+      function(resolve,reject){
+    refTareasActuales.on('value',snapshot=>{
+      snapshot.forEach(function(snapChild){
+        if(snapChild.val().id===self.state.ruta){
+          self.setState({
+            keyTareaPrincipal: snapChild.key,
+          })
+          snapChild.forEach(function(snapBaby){//falta status en el json
+              console.log(snapBaby.val());
+            snapBaby.forEach(function(baby){
+              resolve (
+                arrayDatos = arrayDatos.concat([{nombre:baby.val().tarea,encargado:baby.val().encargado,id:baby.val().id,status:baby.val().status}]),
+                tamArray = arrayDatos.length,
+                taskName[0].nombre =snapChild.val().tarea,
+                taskName[0].status='en proceso'
+              );
+            })//cierre snapBaby foreach
+          })//cierre foreach baby
+        }//cierre if
+      })//cierre snapChild
+    })//cierre  snapshot
+  },//cierre function
+
+  )
+  promise.then(
+    function(){
+      self.setState({
+        datosTareasSecundarias:arrayDatos,
+        datosTareaPrincipal:taskName,
+        tamArray: tamArray,
+      })
+    }
+  )
+  }
+
   render(){
     return(
       <div id="tareas-secundaria-activas">

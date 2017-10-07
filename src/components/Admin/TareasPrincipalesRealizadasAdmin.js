@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import './RevisarTareaAdmin.css'
 import {Link} from 'react-router-dom'
+import {ref,firebaseAuth} from '../../const.js'
 //css
 import './TareasPrincipalesRealizadasAdmin.css'
 
@@ -32,7 +33,8 @@ class ItemTareaRealizada extends Component{
           return(
             <div>
               <Divider />
-              <Link to={`/admin/revisar-tareas/tareas-secundaria-realizadas`}>
+              { dato.status == "En proceso" ? '' :
+              <Link to={`/admin/revisar-tareas/tareas-secundaria-realizadas/`+dato.id}>
               <ListItem
                 primaryText={dato.nombre
                 }
@@ -44,6 +46,7 @@ class ItemTareaRealizada extends Component{
                 }
               />
               </Link>
+            }
             </div>
           )
           })
@@ -59,10 +62,33 @@ class TareasPrincipalesRealizadas extends Component {
       {/* Este es el state(tareas) al que se le agregan los datos de la BD */}
     this.state = {
 
-      tareas:[{nombre:"Hacer una colectiva",descripcion:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ", status:"Completo"},
-              {nombre:"Posada",descripcion:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ',status:"Completo"},
-              {nombre:"Analisis Mercandil",descripcion:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ' ,status:"Completo"}],
+      tareas:[],
     }
+  }
+
+  componentWillMount(){
+    var tareas=[];
+    var self=this;
+    var user =firebaseAuth.currentUser;
+    var userDB = user.email.split('.').join('-');
+    var refTareasActuales=ref.child('ingTala/'+userDB+'/tareasActuales');
+    var promise=new Promise(
+      function (resolve, reject){
+     refTareasActuales.on('value', function(snapshot){
+      snapshot.forEach(function(snapChild){
+        resolve (tareas= tareas.concat([{nombre:snapChild.val().tarea,descripcion:snapChild.val().descripcion,id:snapChild.val().id,status:snapChild.val().status}]));
+
+        })
+      })
+    }
+  )
+  promise.then(
+    function(){
+      self.setState({
+      tareas:tareas
+      })
+    }
+  )
   }
 
   render(){
