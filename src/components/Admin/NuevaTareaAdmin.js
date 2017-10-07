@@ -232,7 +232,8 @@ class DialogTarea extends Component{
         descripcion:it.descripcion,
         fecha:it.dia,
         id:it.id,
-        status:"Enviado"
+        status:"Enviado",
+        notasAdmin:"",
       })
         console.log(it);
     })

@@ -99,8 +99,7 @@ class UserTarea extends Component {
               keyTareaSegunda:snapBaby.key,
             })
             if(snapBaby.val().id==self.state.Taskpath){
-              resolve (array= array.concat([{tarea:snapBaby.val().tarea,descripcion:snapBaby.val().descripcion,fecha:snapBaby.val().fecha,admin:snapBaby.val().admin,supertarea:snapBaby.val().supertarea,id:snapBaby.val().id}]));
-
+              resolve (array= array.concat([{tarea:snapBaby.val().tarea,descripcion:snapBaby.val().descripcion,fecha:snapBaby.val().fecha,admin:snapBaby.val().admin,supertarea:snapBaby.val().supertarea,id:snapBaby.val().id,notasAdmin:snapBaby.val().notasAdmin}]));
             }
           })
         })
@@ -248,6 +247,9 @@ class UserTarea extends Component {
               rows={2}
               rowsMax={4}
             />
+            {
+
+            }
             <div id="user-tarea-evidencia">
               <h2>EVIDENCIA: </h2>
               <ul id="user-files-list">
