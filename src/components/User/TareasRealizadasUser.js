@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import Chip from 'material-ui/Chip';
 
 import './TareasRealizadasUser.css'
+import {ref,firebaseAuth} from '../../const.js'
 
 const styles = {
   chip: {
@@ -34,7 +35,8 @@ class ChipsTareasRealizadas extends Component {
         {this.props.datos.map((dato,key)=>{
           return(
             <div id="tareas-realizadas-chips">
-              <Link to={`/user/tareaID`}>
+            { dato.status != "Completado"? "":
+              <Link to={`/user/sub-tareas/`+dato.id}>
                 <Chip
                   style={styles.chip}
                   key={key}
@@ -42,11 +44,12 @@ class ChipsTareasRealizadas extends Component {
                 >
                   <div id='chip-tarea-sec-activa'>
                     <h4 id="nueva-tarea-titulo">{dato.nombre}</h4>
-                    <h4 className="nueva-tarea-desc"><strong>Encargado: </strong> {dato.encargado}</h4>
+                    <h4 className="nueva-tarea-desc"><strong>Descripcion: </strong> {dato.descripcion}</h4>
                     <h4 className="nueva-tarea-desc"><strong>Status: </strong> {dato.status}</h4>
                   </div>
                 </Chip>
               </Link>
+            }
             </div>
           )
         })}
@@ -60,11 +63,36 @@ class TareasRealizadasUser extends Component {
   constructor() {
     super()
     this.state ={
-      datosTareasSecundarias:[{nombre:'Colectar basura',encargado:'José Lopez',status:'Completadas'},
-                              {nombre:'Colectar basura',encargado:'José Lopez',status:'Completadas'},
-                              {nombre:'Colectar basura',encargado:'José Lopez',status:'Completadas'}]
+      datosTareasSecundarias:[]
     }
   }
+
+  componentWillMount(){
+    var user =firebaseAuth.currentUser.email;
+    var self=this;
+    var userDB = user.split('.').join('-');
+    var refUsers=ref.child('ingTala/'+userDB+'/tareasPendientes');
+    var arrayDatos=[];
+    var promise=new Promise(
+      function(resolve,reject){
+        refUsers.on('value', snapshot=>{
+          snapshot.forEach(snapChild=>{
+            snapChild.forEach(snapBaby=>{
+            resolve (arrayDatos= arrayDatos.concat([{nombre:snapBaby.val().tarea,descripcion:snapBaby.val().descripcion,status:snapBaby.val().status,id:snapBaby.val().id}]));
+            })
+          })
+        })
+      }
+    )
+    promise.then(
+      function(){
+        self.setState({
+          datosTareasSecundarias:arrayDatos
+        })
+      }
+    )
+  }
+
   render(){
     return(
       <div>

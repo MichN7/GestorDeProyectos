@@ -247,9 +247,9 @@ class UserTarea extends Component {
               rows={2}
               rowsMax={4}
             />
-            {
-
-            }
+            <h2><strong>Notas de administrador: </strong>
+            {this.state.arrayInfoTarea[0].notasAdmin == "" ? 'No hay notas por el momento':this.state.arrayInfoTarea[0].notasAdmin}
+            </h2>
             <div id="user-tarea-evidencia">
               <h2>EVIDENCIA: </h2>
               <ul id="user-files-list">
